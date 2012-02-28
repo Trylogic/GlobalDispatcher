@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <ivy-module version="1.0">
 
-	<info organisation="trylogic" module="GlobalDispatcher" revision="1.0" status="integration" publication="20120228223858"/>
+	<info organisation="trylogic" module="GlobalDispatcher" revision="1.0" status="integration" publication="20120228224721"/>
 
 	<publications>
 		<artifact name="GlobalDispatcher" type="swc" ext="swc"/>
@@ -10,18 +9,6 @@
 
 	<dependencies>
 		<dependency name="Insulin" org="trylogic" rev="1.0"/>
-=======
-<ivy-module version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-
-	<info organisation="trylogic" module="Insulin" revision="1.0" status="integration" publication="20120228223629"/>
-
-	<publications>
-		<artifact name="Insulin" type="swc" ext="swc"/>
-	</publications>
-
-	<dependencies>
-		<dependency name="TrylogicUtils" org="trylogic" rev="1.0"/>
->>>>>>> 9dce1625944e6cf6251760e350cbf679356e34d8
 	</dependencies>
 
 </ivy-module>
