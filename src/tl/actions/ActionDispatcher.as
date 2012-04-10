@@ -6,8 +6,6 @@ package tl.actions
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 
-	import tl.ioc.IoCHelper;
-	import tl.ioc.ioc_internal;
 	import tl.utils.MemberDescription;
 	import tl.utils.describeTypeCached;
 	import tl.utils.getMethodsWithMetadata;
@@ -43,15 +41,14 @@ package tl.actions
 	 */
 	public class ActionDispatcher implements IActionDispatcher
 	{
-		private static var instance : ActionDispatcher;
+		private static var instance:ActionDispatcher;
 
-		private const callbacks : Array = new Array();
+		private const callbacks:Array = new Array();
 
-		[Injection]
 		/**
 		 * <code>tl.actions.IActionLogger</code> instance
 		 */
-		public var logger : IActionLogger;
+		public var logger:IActionLogger;
 
 		{
 			if ( describeTypeCached( ActionDispatcher )..metadata.(@name == "Action").length() == 0 )
@@ -60,7 +57,7 @@ package tl.actions
 			}
 		}
 
-		public static function getInstance() : ActionDispatcher
+		public static function getInstance():ActionDispatcher
 		{
 			if ( instance == null )
 			{
@@ -70,18 +67,9 @@ package tl.actions
 			return instance;
 		}
 
-		ioc_internal static function getInstanceForInstance( instance : * ) : ActionDispatcher
+		public function setLogger( logger:IActionLogger ):void
 		{
-			var actionDispatcher : ActionDispatcher = getInstance();
-
-			if ( instance != null ) actionDispatcher.addHandler( instance );
-
-			return actionDispatcher;
-		}
-
-		public function ActionDispatcher()
-		{
-			IoCHelper.injectTo( this );
+			this.logger = logger;
 		}
 
 		/**
@@ -89,11 +77,11 @@ package tl.actions
 		 *
 		 * @param object target for metatag scan
 		 */
-		public function addHandler( object : Object ) : void
+		public function addHandler( object:Object ):void
 		{
-			var ns : Namespace;
-			var methodName : String;
-			for each ( var memberDescription : MemberDescription in getMethodsWithMetadata( object, "Action" ) )
+			var ns:Namespace;
+			var methodName:String;
+			for each ( var memberDescription:MemberDescription in getMethodsWithMetadata( object, "Action" ) )
 			{
 				ns = new Namespace( null, memberDescription.uri );
 				methodName = memberDescription.memberName;
@@ -106,11 +94,11 @@ package tl.actions
 		 *
 		 * @param object target for metatag scan
 		 */
-		public function removeHandler( object : Object ) : void
+		public function removeHandler( object:Object ):void
 		{
-			var ns : Namespace;
-			var methodName : String;
-			for each ( var memberDescription : MemberDescription in getMethodsWithMetadata( object, "Action" ) )
+			var ns:Namespace;
+			var methodName:String;
+			for each ( var memberDescription:MemberDescription in getMethodsWithMetadata( object, "Action" ) )
 			{
 				ns = new Namespace( null, memberDescription.uri );
 				methodName = memberDescription.memberName;
@@ -125,18 +113,18 @@ package tl.actions
 		 * @param params	parameters, passed to Action listener
 		 * @param async		if true, will be called later (after 1ms)
 		 */
-		public function dispatch( type : String, params : Array = null, async : Boolean = false ) : void
+		public function dispatch( type:String, params:Array = null, async:Boolean = false ):void
 		{
 			logger.log( type, params );
 
-			var timer : Timer;
+			var timer:Timer;
 
-			for each( var f : Function in getActions( type ) )
+			for each( var f:Function in getActions( type ) )
 			{
 				if ( async )
 				{
 					timer = new Timer( 1, 1 );
-					timer.addEventListener( TimerEvent.TIMER_COMPLETE, function( e : Event ) : void
+					timer.addEventListener( TimerEvent.TIMER_COMPLETE, function ( e:Event ):void
 					{
 						IEventDispatcher( e.currentTarget ).removeEventListener( e.type, arguments.callee );
 						f.apply( null, params );
@@ -155,26 +143,26 @@ package tl.actions
 		 * @param type	type of the Action to check
 		 * @return		A <code>true</code> value means, that there is Action listeners for passed type
 		 */
-		public function hasActionListener( type : String ) : Boolean
+		public function hasActionListener( type:String ):Boolean
 		{
 			return callbacks[type] != null;
 		}
 
-		private function addActionListener( type : String, listener : Function ) : void
+		private function addActionListener( type:String, listener:Function ):void
 		{
 			if ( type == null || type == "" ) throw new ArgumentError( "Wrong type value! (" + type + ")" );
 			if ( getActions( type )[listener] != null ) return;
 			getActions( type )[listener] = listener;
 		}
 
-		private function removeActionListener( type : String, listener : Function ) : void
+		private function removeActionListener( type:String, listener:Function ):void
 		{
 			if ( !hasActionListener( type ) ) return;
 
 			delete callbacks[type][listener];
 		}
 
-		private function getActions( type : String ) : Dictionary
+		private function getActions( type:String ):Dictionary
 		{
 			if ( callbacks[type] == null )
 			{

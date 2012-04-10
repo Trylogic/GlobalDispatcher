@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="Flex.Build.Configuration">
-    <option name="OUTPUT_FILE_NAME" value="GlobalDispatcher.swf" />
-    <option name="TARGET_PLAYER_VERSION" value="10.2.0" />
-    <option name="ADDITIONAL_COMPILER_OPTIONS" value="-debug=false -keep-as3-metadata+=Action" />
-    <option name="VERSION" value="3" />
+  <component name="FlexBuildConfigurationManager" active="GlobalDispatcher">
+    <configurations>
+      <configuration name="GlobalDispatcher" output-file="GlobalDispatcher.swf" output-folder="$MODULE_DIR$/../out/production/GlobalDispatcher" skip-build="true">
+        <dependencies>
+          <entries>
+            <entry module-name="IoCContainer" build-configuration-name="IoCContainer">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="TrylogicUtils" build-configuration-name="TrylogicUtils">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+        </dependencies>
+        <compiler-options>
+          <option name="additionalOptions" value="-debug=false -keep-as3-metadata+=Action" />
+        </compiler-options>
+        <packaging-air-desktop />
+        <packaging-android />
+        <packaging-ios />
+      </configuration>
+    </configurations>
+    <compiler-options />
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
@@ -12,11 +29,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="IoCContainer" />
     <orderEntry type="module" module-name="TrylogicUtils" />
-    <orderEntry type="library" name="FlexUnit" level="project" />
   </component>
 </module>
 
