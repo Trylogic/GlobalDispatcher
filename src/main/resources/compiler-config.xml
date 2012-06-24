@@ -1,0 +1,10 @@
+<flex-config xmlns="http://www.adobe.com/2006/flex-config">
+
+	<compiler>
+
+		<keep-as3-metadata append="true">
+			<name>Action</name>
+		</keep-as3-metadata>
+
+	</compiler>
+</flex-config>
