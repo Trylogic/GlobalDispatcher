@@ -1,5 +1,6 @@
 ﻿package tl.actions
 {
+
 	import flash.net.registerClassAlias;
 
 	registerClassAlias( "ru.trylogic.messages.MethodInvokeMessage", Action );
@@ -23,7 +24,7 @@
 
 		/**
 		 *
-		 * @param type	String-based action identifer
+		 * @param type    String-based action identifer
 		 * @param params Array with parameters, passed to action listener for this Action
 		 */
 		public function Action( type : String = "", params : Array = null )
