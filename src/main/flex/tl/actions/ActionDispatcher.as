@@ -121,8 +121,10 @@ package tl.actions
 		 */
 		public function dispatch( type : String, params : Array = null, async : Boolean = false ) : void
 		{
-			logger.log( type, params );
-
+			if(logger)
+			{
+				logger.log( type, params );
+			}
 			var timer : Timer;
 
 			for each( var f : Function in getActions( type ) )
