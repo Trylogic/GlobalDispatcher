@@ -1,5 +1,9 @@
 <flex-config xmlns="http://www.adobe.com/2006/flex-config">
 
+	<include-classes>
+		<class>tl.factory.ActionDispatcherFactory</class>
+	</include-classes>
+
 	<compiler>
 
 		<keep-as3-metadata append="true">

@@ -2,6 +2,8 @@ package tl.factory
 {
 
 	import tl.actions.ActionDispatcher;
+	import tl.actions.IActionLogger;
+	import tl.ioc.IoCHelper;
 
 	public class ActionDispatcherFactory
 	{
@@ -10,6 +12,17 @@ package tl.factory
 			if ( type == ActionDispatcher )
 			{
 				var actionDispatcher : ActionDispatcher = ActionDispatcher.getInstance();
+
+				if ( actionDispatcher.logger == null )
+				{
+					try
+					{
+						actionDispatcher.setLogger( IoCHelper.resolve( IActionLogger ) );
+					} catch ( e : Error )
+					{
+
+					}
+				}
 
 				if ( forInstance != null )
 				{
