@@ -4,6 +4,7 @@ package tl.actions
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.TimerEvent;
+	import flash.system.ApplicationDomain;
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 
@@ -40,7 +41,7 @@ package tl.actions
 	 * <listing version="3.0">
 	 *     ActionDispatcher.getInstance().dispatch(SOME_ACTION, ["Hello, World!", 42]);</listing>
 	 */
-	public class ActionDispatcher implements IActionDispatcher
+	public class ActionDispatcher
 	{
 		private static var instance : ActionDispatcher;
 
@@ -55,6 +56,11 @@ package tl.actions
 			if ( describeTypeCached( ActionDispatcher )..metadata.(@name == "Action").length() == 0 )
 			{
 				throw new Error( "Please add -keep-as3-metadata+=Action to flex compiler arguments!" )
+			}
+
+			if ( ApplicationDomain.currentDomain.hasDefinition( "tl.ioc.IoCHelper" ) )
+			{
+				ApplicationDomain.currentDomain.getDefinition( "tl.ioc.IoCHelper" ).registerType( ActionDispatcher, ActionDispatcher, ApplicationDomain.currentDomain.getDefinition( "tl.factory.ActionDispatcherFactory" ) );
 			}
 		}
 
@@ -121,7 +127,7 @@ package tl.actions
 		 */
 		public function dispatch( type : String, params : Array = null, async : Boolean = false ) : void
 		{
-			if(logger)
+			if ( logger )
 			{
 				logger.log( type, params );
 			}
@@ -136,6 +142,7 @@ package tl.actions
 					{
 						IEventDispatcher( e.currentTarget ).removeEventListener( e.type, arguments.callee );
 						f.apply( null, params );
+						timer = null;
 					} );
 					timer.start();
 				} else
@@ -162,11 +169,15 @@ package tl.actions
 			{
 				throw new ArgumentError( "Wrong type value! (" + type + ")" );
 			}
-			if ( getActions( type )[listener] != null )
+
+			const actions : Vector.<Function> = getActions( type );
+
+			if ( actions.indexOf(listener) != -1 )
 			{
 				return;
 			}
-			getActions( type )[listener] = listener;
+
+			actions.push(listener);
 		}
 
 		private function removeActionListener( type : String, listener : Function ) : void
@@ -176,15 +187,25 @@ package tl.actions
 				return;
 			}
 
-			delete callbacks[type][listener];
+			const actions : Vector.<Function> = getActions( type );
+
+			const listenerPosition : Number = actions.indexOf(listener);
+
+			if ( listenerPosition == -1 )
+			{
+				return;
+			}
+
+			actions.splice(listenerPosition, 1);
 		}
 
-		private function getActions( type : String ) : Dictionary
+		private function getActions( type : String ) : Vector.<Function>
 		{
 			if ( callbacks[type] == null )
 			{
-				return callbacks[type] = new Dictionary();
+				return callbacks[type] = new Vector.<Function>();
 			}
+
 			return callbacks[type];
 		}
 	}
