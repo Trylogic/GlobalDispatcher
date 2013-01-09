@@ -17,7 +17,7 @@ package tl.factory
 				{
 					try
 					{
-						actionDispatcher.setLogger( IoCHelper.resolve( IActionLogger ) );
+						actionDispatcher.setLogger( IoCHelper.resolve( IActionLogger, ActionDispatcherFactory ) );
 					} catch ( e : Error )
 					{
 
